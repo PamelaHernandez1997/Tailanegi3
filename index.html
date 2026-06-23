@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailanegi - Instituto Demográfico y Estadístico de Tailandia</title>
+    <!-- Google Fonts: Outfit para la UI y Architects Daughter/Caveat para la pizarra manuscrita -->
+    <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Caveat:wght@400;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js para gráficos interactivos y storytelling -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- 1. BARRA DE NAVEGACIÓN SUPERIOR Y CABECERA (Estilo Institucional) -->
+    <header class="main-header">
+        <div class="header-container">
+            <!-- Identidad Institucional -->
+            <div class="brand">
+                <h1 class="brand-title">TAILANEGI</h1>
+                <span class="brand-subtitle">INSTITUTO DEMOGRÁFICO Y ESTADÍSTICO DE TAILANDIA</span>
+            </div>
+
+            <!-- Buscador Integrado (Píldora) -->
+            <div class="search-box">
+                <span class="search-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </span>
+                <input type="text" id="global-search" placeholder="Busca una región, año (ej. 2030) o población (ej. 72M)..." aria-label="Buscador global de demografía">
+                <button id="search-clear-btn" class="clear-btn hidden" aria-label="Limpiar búsqueda">&times;</button>
+            </div>
+
+            <!-- Selector de Fuente (Derecha) -->
+            <div class="data-source">
+                <span class="source-label">Fuente de Datos:</span>
+                <div class="select-wrapper">
+                    <select id="source-select">
+                        <option value="worldbank" selected>Banco Mundial (De Facto)</option>
+                        <option value="inegi-adapted" disabled>Estilo INEGI (Histórico Adaptado)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Menú de Pestañas Inferior (Botonera) -->
+    <nav class="tab-navigation">
+        <div class="nav-container">
+            <button class="nav-tab active" data-target="tab-dashboard" id="btn-tab-dashboard">
+                <span class="tab-icon">
+                    <!-- Icono Lineal Gráfica de Barras -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </span>
+                Dashboard de Proyección
+            </button>
+            <button class="nav-tab" data-target="tab-map" id="btn-tab-map">
+                <span class="tab-icon">
+                    <!-- Icono Lineal Mapa Desplegado -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon><line x1="9" y1="3" x2="9" y2="18"></line><line x1="15" y1="6" x2="15" y2="21"></line></svg>
+                </span>
+                Mapa Regional Interactivo
+            </button>
+            <button class="nav-tab" data-target="tab-model" id="btn-tab-model">
+                <span class="tab-icon">
+                    <!-- Icono Lineal de Documento/Libro -->
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                </span>
+                Modelo Matemático Malthusiano
+            </button>
+        </div>
+    </nav>
+
+    <!-- NOTIFICACIÓN / ALERTA GLOBAL DE BÚSQUEDA -->
+    <div id="search-alert-banner" class="search-banner hidden">
+        <span class="search-banner-text">Búsqueda aplicada con éxito</span>
+        <button id="close-search-banner-btn" aria-label="Cerrar notificación">&times;</button>
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL DE CONTENIDO -->
+    <main class="content-wrapper">
+
+        <!-- ==================== PESTAÑA 1: DASHBOARD ==================== -->
+        <section id="tab-dashboard" class="tab-content active-content">
+            <!-- Panel superior de Indicadores Rápidos -->
+            <div class="metrics-grid">
+                <div class="metric-card" id="card-region">
+                    <span class="metric-label">Región Seleccionada</span>
+                    <h3 class="metric-value" id="val-region-name">Tailandia (Nacional)</h3>
+                    <p class="metric-desc" id="val-region-desc">Consolidación nacional de las tendencias de las regiones.</p>
+                </div>
+                <div class="metric-card" id="card-population">
+                    <span class="metric-label">Población Proyectada (<span class="selected-year-label">2018</span>)</span>
+                    <h3 class="metric-value font-numeric" id="val-population-number">71,376,079</h3>
+                    <span class="trend-badge" id="val-pop-trend-badge">Año Base</span>
+                </div>
+                <div class="metric-card" id="card-growth-rate">
+                    <span class="metric-label">Tasa de Crecimiento (K)</span>
+                    <h3 class="metric-value font-numeric" id="val-k-rate">+0.078%</h3>
+                    <p class="metric-desc">Tasa exponencial del modelo de Malthus.</p>
+                </div>
+                <div class="metric-card" id="card-alert-status">
+                    <span class="metric-label">Estado Demográfico</span>
+                    <h3 class="metric-value" id="val-status-text">Estable</h3>
+                    <p class="metric-desc" id="val-status-desc">Sin alertas críticas detectadas en el periodo.</p>
+                </div>
+            </div>
+
+            <!-- Alerta Crítica Dinámica -->
+            <div id="critical-alert-banner" class="alert-banner hidden">
+                <span class="alert-pulse-dot"></span>
+                <span class="alert-message"><strong>⚠️ ALERTA DEMOGRÁFICA:</strong> Esta región muestra un decrecimiento o estancamiento continuo en el periodo proyectado.</span>
+            </div>
+
+            <div class="dashboard-body">
+                <!-- Columna Izquierda: Controladores y Storytelling -->
+                <div class="dashboard-controls">
+                    <!-- Control Deslizante de Tiempo -->
+                    <div class="control-card">
+                        <h4 class="card-title">Línea de Tiempo (2018 - 2040)</h4>
+                        <div class="slider-container">
+                            <span class="slider-year">2018</span>
+                            <input type="range" id="timeline-slider" min="2018" max="2040" value="2018" class="custom-slider">
+                            <span class="slider-year">2040</span>
+                        </div>
+                        <div class="slider-active-year">
+                            Año Seleccionado: <strong id="slider-year-value" class="font-numeric">2018</strong>
+                        </div>
+                    </div>
+
+                    <!-- Filtro Rápido de Regiones -->
+                    <div class="control-card">
+                        <h4 class="card-title">Filtro por Región</h4>
+                        <div class="regions-list-buttons">
+                            <button class="region-filter-btn active" data-region="Total">Nacional (Total)</button>
+                            <button class="region-filter-btn" data-region="Northern">Región Norte</button>
+                            <button class="region-filter-btn" data-region="Central">Región Centro</button>
+                            <button class="region-filter-btn" data-region="Northeastern">Región Nordeste (Isan)</button>
+                            <button class="region-filter-btn" data-region="Eastern">Región Este</button>
+                            <button class="region-filter-btn" data-region="Western">Región Oeste</button>
+                            <button class="region-filter-btn" data-region="Southern">Región Sur</button>
+                        </div>
+                    </div>
+
+                    <!-- Storytelling Narrativo -->
+                    <div class="control-card narrative-card">
+                        <h4 class="card-title flex-title">
+                            <span>Relato del Hito Demográfico</span>
+                            <span class="badge badge-year font-numeric" id="narrative-year-badge">2018</span>
+                        </h4>
+                        <p class="narrative-text" id="val-narrative-text">
+                            Año base de la proyección. Tailandia inicia con una población de 71,376,079 habitantes. Las dinámicas regionales reflejan una alta concentración de crecimiento en las zonas Central y Este debido al dinamismo económico, contrastando con el inicio del estancamiento demográfico en las regiones del Norte e Isan.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Gráfica Principal -->
+                <div class="dashboard-chart-area">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4 class="card-title" id="chart-main-title">Curva de Proyección Malthusiana: Nacional (Total)</h4>
+                            <span class="chart-subtitle">Población proyectada (Millones) vs Años</span>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="projectionChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PESTAÑA 2: MAPA INTERACTIVO ==================== -->
+        <section id="tab-map" class="tab-content">
+            <div class="map-layout">
+                <!-- Columna Izquierda: Mapa SVG de Tailandia -->
+                <div class="map-container-card">
+                    <h3 class="card-title">Mapa Político-Demográfico de Tailandia</h3>
+                    <p class="card-subtitle">Haz clic o pasa el cursor sobre las regiones para explorar sus proyecciones.</p>
+                    
+                    <div class="svg-map-wrapper">
+                        <!-- Mapa SVG de Tailandia (6 Regiones Simplificadas y Proporcionadas) -->
+                        <svg id="thailand-map" viewBox="0 0 500 800" width="100%" height="100%">
+                            <!-- Definición de gradientes y sombras para aspecto premium -->
+                            <defs>
+                                <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+                                    <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.35"/>
+                                </filter>
+                            </defs>
+
+                            <!-- Capa de Océano decorativa -->
+                            <rect width="100%" height="100%" fill="none"/>
+                            
+                            <!-- Grupo del Mapa Completo -->
+                            <g filter="url(#shadow)">
+                                <!-- 1. Northern Region (Norte) -->
+                                <path id="map-region-Northern" class="map-region-path" data-region="Northern"
+                                      d="M 170 80 L 250 50 L 300 80 L 310 140 L 330 180 L 270 230 L 210 230 L 170 170 Z" />
+
+                                <!-- 2. Northeastern Region (Isan) -->
+                                <path id="map-region-Northeastern" class="map-region-path" data-region="Northeastern"
+                                      d="M 300 80 L 370 100 L 440 120 L 460 200 L 440 280 L 370 320 L 310 290 L 270 230 L 330 180 L 310 140 Z" />
+
+                                <!-- 3. Western Region (Oeste) -->
+                                <path id="map-region-Western" class="map-region-path" data-region="Western"
+                                      d="M 170 170 L 210 230 L 190 320 L 200 420 L 170 470 L 160 470 L 150 320 L 170 170 Z" />
+
+                                <!-- 4. Central Region (Centro) -->
+                                <path id="map-region-Central" class="map-region-path" data-region="Central"
+                                      d="M 210 230 L 270 230 L 310 290 L 330 360 L 240 360 L 200 420 L 190 320 Z" />
+
+                                <!-- 5. Eastern Region (Este) -->
+                                <path id="map-region-Eastern" class="map-region-path" data-region="Eastern"
+                                      d="M 310 290 L 330 360 L 330 390 L 390 410 L 400 320 L 370 320 Z" />
+
+                                <!-- 6. Southern Region (Sur) -->
+                                <path id="map-region-Southern" class="map-region-path" data-region="Southern"
+                                      d="M 170 470 L 200 420 L 240 360 L 330 390 L 230 460 L 220 540 L 230 630 L 260 720 L 240 760 L 200 760 L 180 660 L 180 540 Z" />
+                            </g>
+
+                            <!-- Etiquetas de Texto Incrustadas Legibles (<text> SVG) -->
+                            <text x="235" y="145" class="svg-region-label" pointer-events="none">Northern</text>
+                            <text x="365" y="200" class="svg-region-label" pointer-events="none">Northeastern</text>
+                            <text x="245" y="295" class="svg-region-label" pointer-events="none">Central</text>
+                            <text x="175" y="325" class="svg-region-label" pointer-events="none">Western</text>
+                            <text x="360" y="355" class="svg-region-label" pointer-events="none">Eastern</text>
+                            <text x="210" y="600" class="svg-region-label" pointer-events="none">Southern</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Panel Lateral Demográfico con Alertas Rojas -->
+                <div class="map-sidebar-card" id="map-details-panel">
+                    <div class="panel-header">
+                        <span class="region-tag">Región Activa</span>
+                        <h3 class="sidebar-title" id="map-region-title">Región Norte</h3>
+                        <p class="sidebar-subtitle" id="map-region-subtitle">Northern Region</p>
+                    </div>
+
+                    <!-- Contenido de Datos de la Región Seleccionada -->
+                    <div class="panel-body">
+                        <!-- Alerta Dinámica de Decrecimiento (Roja) -->
+                        <div id="map-critical-alert" class="alert-banner-red hidden">
+                            <div class="alert-red-header">
+                                <span class="alert-icon-red">⚠️</span>
+                                <strong>ALERTA DE DESPOBLACIÓN</strong>
+                            </div>
+                            <p class="alert-red-text">Esta región presenta un decrecimiento demográfico continuo. Las proyecciones muestran una tasa de crecimiento negativa (k &lt; 0) e irreversible bajo el modelo de Malthus.</p>
+                        </div>
+
+                        <!-- Tarjetas de datos rápidos de la región -->
+                        <div class="panel-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">Población Inicial (2018):</span>
+                                <strong class="stat-value font-numeric" id="map-val-p0">11,500,000 hab.</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Población Proyectada (2040):</span>
+                                <strong class="stat-value font-numeric" id="map-val-p40">10,642,398 hab.</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Tasa Anual de Malthus (k):</span>
+                                <strong class="stat-value font-numeric text-negative" id="map-val-k">-0.0035 (-0.35%)</strong>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">Diferencia Poblacional:</span>
+                                <strong class="stat-value font-numeric text-negative" id="map-val-diff">-857,602 hab.</strong>
+                            </div>
+                        </div>
+
+                        <div class="region-description-box">
+                            <h4>Descripción Geodemográfica</h4>
+                            <p id="map-region-desc-text">Región montañosa con alto índice de envejecimiento demográfico y migración hacia centros urbanos.</p>
+                        </div>
+
+                        <div class="region-trend-box">
+                            <h4>Tendencia Proyectada</h4>
+                            <p id="map-region-trend-text">Decrecimiento continuo por baja natalidad y emigración.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PESTAÑA 3: MODELO MATEMÁTICO ==================== -->
+        <section id="tab-model" class="tab-content">
+            <div class="model-layout">
+                <!-- Columna Izquierda: Pizarra Analítica Manuscrita (Sin LaTeX) -->
+                <div class="blackboard-wrapper">
+                    <div class="blackboard-frame">
+                        <div class="blackboard-surface">
+                            <div class="chalkboard-header">
+                                <h3 class="chalk-title">Ecuación Exponencial Malthusiana</h3>
+                                <p class="chalk-subtitle">Derivación y Solución del Crecimiento Poblacional</p>
+                            </div>
+
+                            <div class="chalk-content">
+                                <!-- Paso 1 -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[1] Tasa de Cambio Proporcional:</div>
+                                    <div class="chalk-math">
+                                        <div class="math-fraction">
+                                            <span class="math-num">dP</span>
+                                            <span class="math-den">dt</span>
+                                        </div>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">K · P</span>
+                                    </div>
+                                    <div class="chalk-step-desc">La derivada de la población (P) respecto al tiempo (t) es proporcional a la misma población multiplicada por la constante de crecimiento (K).</div>
+                                </div>
+
+                                <!-- Paso 2 -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[2] Separación de Variables:</div>
+                                    <div class="chalk-math">
+                                        <div class="math-fraction">
+                                            <span class="math-num">1</span>
+                                            <span class="math-den">P</span>
+                                        </div>
+                                        <span class="math-term">dP</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">K · dt</span>
+                                    </div>
+                                    <div class="chalk-step-desc">Se agrupan todos los términos que contienen P de un lado y los de t del otro para permitir la integración.</div>
+                                </div>
+
+                                <!-- Paso 3 -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[3] Integración a Ambos Lados:</div>
+                                    <div class="chalk-math">
+                                        <span class="math-term">∫</span>
+                                        <div class="math-fraction">
+                                            <span class="math-num">1</span>
+                                            <span class="math-den">P</span>
+                                        </div>
+                                        <span class="math-term">dP</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">∫ K · dt</span>
+                                        <span class="math-arrow">➔</span>
+                                        <span class="math-term">ln |P|</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">K · t + C</span>
+                                    </div>
+                                    <div class="chalk-step-desc">Integramos para deshacernos de las diferenciales. C es la constante de integración resultante del proceso.</div>
+                                </div>
+
+                                <!-- Paso 4 -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[4] Solución General (Exponenciación):</div>
+                                    <div class="chalk-math">
+                                        <span class="math-term">P(t)</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">e <sup>(K · t + C)</sup></span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">e <sup>C</sup> · e <sup>K · t</sup></span>
+                                    </div>
+                                    <div class="chalk-step-desc">Elevamos e a la potencia de ambos lados para eliminar el logaritmo natural.</div>
+                                </div>
+
+                                <!-- Paso 5 -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[5] Condición Inicial (t = 0):</div>
+                                    <div class="chalk-math">
+                                        <span class="math-term">Para t = 0 : P(0)</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">P<sub>0</sub></span>
+                                        <span class="math-arrow">➔</span>
+                                        <span class="math-term">e<sup>C</sup></span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">P<sub>0</sub></span>
+                                    </div>
+                                    <div class="chalk-step-desc">Sustituyendo el estado inicial deducimos que e elevado a la constante C es precisamente la población base (P0).</div>
+                                </div>
+
+                                <!-- Paso Final Enmarcado -->
+                                <div class="chalk-box">
+                                    <div class="chalk-box-title">SOLUCIÓN GENERAL MALTHUSIANA</div>
+                                    <div class="chalk-math font-large">
+                                        <span class="math-term">P(t)</span>
+                                        <span class="math-sign">=</span>
+                                        <span class="math-term">P<sub>0</sub> · e <sup>K · t</sup></span>
+                                    </div>
+                                </div>
+
+                                <!-- Fórmula del Despeje del tiempo -->
+                                <div class="chalk-step">
+                                    <div class="chalk-step-num">[6] Despeje de Tiempo para Proyecciones:</div>
+                                    <div class="chalk-math">
+                                        <span class="math-term">t</span>
+                                        <span class="math-sign">=</span>
+                                        <div class="math-fraction">
+                                            <span class="math-num">ln ( P / P<sub>0</sub> )</span>
+                                            <span class="math-den">K</span>
+                                        </div>
+                                    </div>
+                                    <div class="chalk-step-desc">Permite calcular en cuántos años (t) desde la fecha base (2018) la población alcanzará una cifra P.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna Derecha: Panel del Despeje (Solver Interactivo) -->
+                <div class="solver-container-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Despeje de Tiempo Interactivo</h3>
+                        <p class="card-subtitle">Calcula en qué año se alcanzará una población específica según la tasa regional.</p>
+                    </div>
+
+                    <div class="card-body">
+                        <form id="solver-form">
+                            <!-- Selector de Región para el Solver -->
+                            <div class="form-group">
+                                <label for="solver-region">Selecciona la Región para Calcular:</label>
+                                <select id="solver-region" class="form-control">
+                                    <option value="Total" selected>Tailandia (Nacional - Total)</option>
+                                    <option value="Northern">Región Norte (k = -0.0035)</option>
+                                    <option value="Central">Región Centro (k = +0.0038)</option>
+                                    <option value="Northeastern">Región Nordeste / Isan (k = -0.0012)</option>
+                                    <option value="Eastern">Región Este (k = +0.0075)</option>
+                                    <option value="Western">Región Oeste (k = -0.0022)</option>
+                                    <option value="Southern">Región Sur (k = +0.0025)</option>
+                                </select>
+                            </div>
+
+                            <!-- Entrada de Población Objetivo -->
+                            <div class="form-group">
+                                <label for="solver-target-pop">Población Objetivo (Habitantes):</label>
+                                <input type="number" id="solver-target-pop" class="form-control" placeholder="Ej. 72000000" min="1" required>
+                                <span class="input-hint">Puedes ingresar números enteros. Ej: 73000000 (o busca "73M" en el buscador superior).</span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" id="btn-solve">
+                                <span>Calcular Año de Coincidencia</span>
+                                <span class="btn-spinner hidden"></span>
+                            </button>
+                        </form>
+
+                        <!-- Área de Resultados del Solver -->
+                        <div id="solver-result-box" class="solver-results-card hidden">
+                            <h4 class="result-title">Resultado del Cálculo</h4>
+                            
+                            <!-- Resultado Principal -->
+                            <div id="solver-success-view">
+                                <div class="result-highlight-box">
+                                    La población objetivo se alcanzará en el:
+                                    <div class="solved-year-value font-numeric" id="solver-res-year">2032.5</div>
+                                </div>
+                                <p class="result-details">
+                                    Región analizada: <strong id="solver-res-region">Región Centro</strong><br>
+                                    Tiempo despejado (t): <strong id="solver-res-t" class="font-numeric">14.5 años</strong> desde el 2018.
+                                </p>
+
+                                <div class="math-steps-box">
+                                    <h5>Desglose Paso a Paso de la Resolución:</h5>
+                                    <ol id="solver-steps-list" class="steps-list font-monospace">
+                                        <!-- Generado dinámicamente -->
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <!-- Mensaje de Error en la viabilidad matemática (Alerta Roja) -->
+                            <div id="solver-error-view" class="alert-banner-red hidden">
+                                <div class="alert-red-header">
+                                    <span class="alert-icon-red">❌</span>
+                                    <strong id="solver-err-title">Imposible Alcanzar la Población</strong>
+                                </div>
+                                <p class="alert-red-text" id="solver-err-message">
+                                    La región seleccionada tiene una tasa de crecimiento decreciente. Por ende, nunca alcanzará una cifra superior a su población inicial.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA INSTITUCIONAL -->
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 TAILANEGI - Instituto Demográfico y Estadístico de Tailandia. Todos los derechos reservados.</p>
+            <p class="footer-meta">Diseño Web UI/UX Institucional - Proyecto de Proyecciones de Población de Tailandia (2018 - 2040)</p>
+        </div>
+    </footer>
+
+    <!-- Lógica Interactiva y Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1228 @@
+/* ==========================================================================
+   DISEÑO WEB UI/UX INSTITUCIONAL - PROYECTO TAILANEGI
+   ========================================================================== */
+
+/* 1. CONFIGURACIÓN DE VARIABLES Y PALETA DE COLORES */
+:root {
+    --primary-navy-dark: #0B192C;       /* Azul marino oscuro para cabecera */
+    --primary-navy-light: #1E3E62;      /* Azul marino medio para acentos */
+    --primary-blue: #0056B3;           /* Azul institucional */
+    --primary-blue-hover: #004494;     /* Azul institucional hover */
+    --bg-light: #F8FAFC;               /* Fondo general de la página */
+    --bg-card: #FFFFFF;                /* Fondo de tarjetas */
+    --text-main: #1E293B;              /* Texto principal */
+    --text-muted: #64748B;             /* Texto secundario */
+    --border-color: #E2E8F0;           /* Bordes estándar */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    
+    /* Alertas rojas de declive demográfico */
+    --alert-red: #EF4444;              /* Rojo brillante de advertencia */
+    --alert-red-dark: #B91C1C;         /* Rojo oscuro */
+    --alert-red-bg: #FEF2F2;           /* Fondo de alerta */
+    --alert-red-border: #FCA5A5;       /* Borde de alerta */
+    
+    /* Pizarra escolar de Malthus */
+    --wood-border: #5C3D2E;            /* Madera del marco */
+    --chalkboard-bg: #1A3026;          /* Verde pizarra */
+    --chalk-white: #F5F5EC;            /* Tiza blanca */
+    --chalk-yellow: #F3E99F;           /* Tiza amarilla */
+    --chalk-blue: #A5D7E8;             /* Tiza azul */
+}
+
+/* 2. RESET Y ESTILOS GENERALES */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-main);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Clases tipográficas especiales */
+.font-numeric {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.font-monospace {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Ocultar elementos */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   3. MAQUETACIÓN DE LA CABECERA Y BUSCADOR
+   ========================================================================== */
+.main-header {
+    background-color: var(--primary-navy-dark);
+    /* Fondo con textura sutil */
+    background-image: radial-gradient(circle at 10% 20%, rgba(30, 62, 98, 0.4) 0%, transparent 90%),
+                      linear-gradient(rgba(11, 25, 44, 0.95), rgba(11, 25, 44, 0.95));
+    color: #FFFFFF;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow-md);
+    border-bottom: 3px solid var(--primary-blue);
+    position: relative;
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 2fr 1.2fr;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Identidad */
+.brand {
+    display: flex;
+    flex-direction: column;
+}
+
+.brand-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+    line-height: 1.1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brand-subtitle {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.8px;
+    color: #94A3B8;
+    margin-top: 2px;
+}
+
+/* Buscador Integrado (Píldora) */
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50px;
+    padding: 0 1rem;
+    height: 44px;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+    background-color: rgba(255, 255, 255, 0.98);
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.25);
+}
+
+.search-box:focus-within input {
+    color: var(--primary-navy-dark);
+}
+
+.search-box:focus-within .search-icon {
+    color: var(--primary-blue);
+}
+
+.search-icon {
+    color: #94A3B8;
+    margin-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+}
+
+.search-box input {
+    background: none;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+    font-size: 0.85rem;
+    width: 100%;
+    font-family: inherit;
+    font-weight: 400;
+}
+
+.search-box input::placeholder {
+    color: #94A3B8;
+}
+
+.clear-btn {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    transition: color 0.3s;
+}
+
+.clear-btn:hover {
+    color: var(--alert-red);
+}
+
+/* Selector de Fuente (Derecha) */
+.data-source {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.source-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #94A3B8;
+    white-space: nowrap;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    padding: 0.5rem 1.5rem 0.5rem 0.75rem;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 500;
+    transition: all 0.3s;
+    appearance: none;
+}
+
+.select-wrapper select:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.select-wrapper::after {
+    content: '▼';
+    font-size: 0.6rem;
+    color: #94A3B8;
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   4. MENÚ DE PESTAÑAS (BOTONERA)
+   ========================================================================== */
+.tab-navigation {
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    z-index: 90;
+}
+
+.nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    padding: 0 2rem;
+}
+
+.nav-tab {
+    background: none;
+    border: none;
+    outline: none;
+    padding: 1rem 1.5rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-tab:hover {
+    color: var(--primary-blue);
+    background-color: rgba(0, 86, 179, 0.03);
+}
+
+.nav-tab.active {
+    color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue); /* Línea azul inferior activa */
+}
+
+.tab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================================
+   5. CONTENEDOR PRINCIPAL Y PESTAÑAS
+   ========================================================================== */
+.content-wrapper {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.tab-content.active-content {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Banners de Notificaciones */
+.search-banner {
+    background-color: #E0F2FE;
+    border-left: 5px solid #0284C7;
+    color: #0369A1;
+    padding: 0.75rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0.5rem auto 0;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.search-banner button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #0369A1;
+    line-height: 1;
+}
+
+/* ==========================================================================
+   6. METRICAS / INDICADORES CLAVE (DASHBOARD)
+   ========================================================================== */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.metric-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.metric-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-navy-dark);
+    margin: 0.5rem 0;
+    transition: color 0.3s ease;
+}
+
+.metric-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Distintivo de Tendencia */
+.trend-badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: #F1F5F9;
+    color: #475569;
+}
+
+.trend-badge.grow {
+    background-color: #DCFCE7;
+    color: #15803D;
+}
+
+.trend-badge.decline {
+    background-color: var(--alert-red-bg);
+    color: var(--alert-red-dark);
+}
+
+/* Estilos de Alertas Rojas Demográficas */
+.alert-banner-red {
+    background-color: var(--alert-red-bg);
+    border: 1px solid var(--alert-red-border);
+    border-left: 5px solid var(--alert-red);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    animation: pulseBorder 2s infinite ease-in-out;
+}
+
+.alert-red-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--alert-red-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.alert-red-text {
+    font-size: 0.8rem;
+    color: #7F1D1D;
+}
+
+.alert-banner {
+    background-color: var(--alert-red-bg);
+    border: 1px solid var(--alert-red-border);
+    border-radius: 8px;
+    padding: 0.75rem 1.2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    animation: pulseBorder 2s infinite ease-in-out;
+}
+
+.alert-pulse-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--alert-red);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: pulseDot 1.5s infinite;
+}
+
+.alert-message {
+    font-size: 0.85rem;
+    color: var(--alert-red-dark);
+}
+
+/* Animaciones de Alertas */
+@keyframes pulseDot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+@keyframes pulseBorder {
+    0% { border-color: var(--alert-red-border); }
+    50% { border-color: var(--alert-red); box-shadow: 0 0 8px rgba(239, 68, 68, 0.15); }
+    100% { border-color: var(--alert-red-border); }
+}
+
+/* Modificadores de Alertas para los Indicadores Rápidos (Clase Crítica) */
+.metric-card.alert-critical {
+    border-color: var(--alert-red-border) !important;
+    background-color: var(--alert-red-bg) !important;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.1) !important;
+}
+
+.metric-card.alert-critical .metric-value {
+    color: var(--alert-red-dark) !important;
+}
+
+.metric-card.alert-critical .metric-label {
+    color: #991B1B !important;
+}
+
+/* ==========================================================================
+   7. CUERPO DEL DASHBOARD Y CONTROLES
+   ========================================================================== */
+.dashboard-body {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.dashboard-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.control-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-navy-dark);
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.card-title.flex-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-year {
+    background-color: var(--primary-blue);
+    color: #FFFFFF;
+}
+
+/* Slider de Línea de Tiempo Estilizado */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.slider-year {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.custom-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 5px;
+    background: #E2E8F0;
+    outline: none;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.custom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary-blue);
+    border: 3px solid #FFFFFF;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.custom-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    background: var(--primary-blue-hover);
+}
+
+.slider-active-year {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-main);
+}
+
+.slider-active-year strong {
+    font-size: 1.1rem;
+    color: var(--primary-blue);
+}
+
+/* Lista de Botones para Región */
+.regions-list-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.region-filter-btn {
+    background-color: #F8FAFC;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    text-align: left;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.region-filter-btn:hover {
+    background-color: #F1F5F9;
+    border-color: #CBD5E1;
+}
+
+.region-filter-btn.active {
+    background-color: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #FFFFFF;
+}
+
+/* Tarjeta Narrativa */
+.narrative-card {
+    background-color: #F8FAFC;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.narrative-text {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* Área de la Gráfica */
+.dashboard-chart-area {
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+}
+
+.chart-header {
+    margin-bottom: 1.5rem;
+}
+
+.chart-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 2px;
+}
+
+.chart-container {
+    position: relative;
+    height: 380px;
+    width: 100%;
+}
+
+/* ==========================================================================
+   8. PESTAÑA MAPA INTERACTIVO
+   ========================================================================== */
+.map-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.map-container-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.svg-map-wrapper {
+    width: 100%;
+    max-width: 420px;
+    margin-top: 1rem;
+}
+
+/* Estilos de las Regiones SVG */
+.map-region-path {
+    fill: #E2E8F0;                      /* Color por defecto grisáceo */
+    stroke: #FFFFFF;                    /* Líneas de separación blancas */
+    stroke-width: 2.5;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-region-path:hover {
+    fill: #94A3B8;
+    transform: translateY(-3px);
+}
+
+/* Regiones en estado Normal Seleccionadas */
+#map-region-Northern.active { fill: #38BDF8; }
+#map-region-Northeastern.active { fill: #FBBF24; }
+#map-region-Central.active { fill: #34D399; }
+#map-region-Eastern.active { fill: #818CF8; }
+#map-region-Western.active { fill: #F472B6; }
+#map-region-Southern.active { fill: #A78BFA; }
+
+/* Colores Dinámicos con Alertas Rojas de Decrecimiento */
+.map-region-path.declining {
+    fill: #FCA5A5; /* Rosa/rojo muy suave por defecto si está declinando */
+}
+
+.map-region-path.declining:hover {
+    fill: #F87171;
+}
+
+.map-region-path.declining.active {
+    fill: var(--alert-red) !important;
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.6));
+    stroke: var(--alert-red-dark);
+    stroke-width: 3.5;
+}
+
+/* Etiquetas flotantes en el SVG */
+.svg-region-label {
+    fill: var(--primary-navy-dark);
+    font-size: 0.6rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-anchor: middle;
+    letter-spacing: 0.5px;
+    filter: drop-shadow(1px 1px 1px rgba(255, 255, 255, 0.8));
+    transition: fill 0.3s;
+}
+
+/* Panel Lateral del Mapa */
+.map-sidebar-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.region-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: var(--border-color);
+    color: var(--text-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-navy-dark);
+}
+
+.sidebar-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.panel-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    background-color: #F8FAFC;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.stat-label {
+    color: var(--text-muted);
+}
+
+.stat-value {
+    color: var(--text-main);
+}
+
+.text-negative {
+    color: var(--alert-red-dark);
+    font-weight: 700;
+}
+
+.region-description-box, .region-trend-box {
+    margin-bottom: 1rem;
+}
+
+.region-description-box h4, .region-trend-box h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--primary-navy-light);
+    margin-bottom: 0.25rem;
+}
+
+.region-description-box p, .region-trend-box p {
+    font-size: 0.8rem;
+    color: var(--text-main);
+}
+
+/* Modificador de Alerta Roja del Panel Lateral */
+.map-sidebar-card.alert-critical {
+    border-color: var(--alert-red-border) !important;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.15) !important;
+}
+
+.map-sidebar-card.alert-critical .panel-stats {
+    background-color: #FFF5F5 !important;
+    border-color: #FEE2E2 !important;
+}
+
+/* ==========================================================================
+   9. PESTAÑA MODELO MATEMÁTICO (PIZARRA)
+   ========================================================================== */
+.model-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Estilo del Marco de Madera de la Pizarra */
+.blackboard-wrapper {
+    width: 100%;
+}
+
+.blackboard-frame {
+    background-color: var(--wood-border);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4),
+                inset 0 4px 6px rgba(255,255,255,0.2),
+                inset 0 -4px 6px rgba(0,0,0,0.4);
+    position: relative;
+    border-bottom: 16px solid #4A3124; /* Repisa para tizas */
+}
+
+/* Efecto Tiza sobre Pizarra Verde */
+.blackboard-surface {
+    background-color: var(--chalkboard-bg);
+    /* Patrón de textura de tiza borrosa */
+    background-image: radial-gradient(circle, rgba(34, 68, 53, 0.5) 0%, rgba(20, 40, 31, 0.6) 100%),
+                      radial-gradient(rgba(255,255,255,0.02) 1px, transparent 0),
+                      radial-gradient(rgba(255,255,255,0.01) 2px, transparent 0);
+    background-size: auto, 40px 40px, 80px 80px;
+    border-radius: 4px;
+    padding: 2rem;
+    color: var(--chalk-white);
+    font-family: 'Caveat', 'Architects Daughter', cursive;
+    letter-spacing: 0.8px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    position: relative;
+}
+
+.chalkboard-header {
+    text-align: center;
+    border-bottom: 2px dashed rgba(245, 245, 236, 0.25);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.chalk-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--chalk-yellow);
+    text-shadow: 0 0 5px rgba(243, 233, 159, 0.3);
+}
+
+.chalk-subtitle {
+    font-size: 0.85rem;
+    color: var(--chalk-blue);
+    opacity: 0.8;
+}
+
+/* Pasos Matemáticos en la Pizarra */
+.chalk-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.chalk-step {
+    border-bottom: 1px dashed rgba(245, 245, 236, 0.15);
+    padding-bottom: 1rem;
+}
+
+.chalk-step:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.chalk-step-num {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--chalk-yellow);
+    margin-bottom: 0.4rem;
+}
+
+.chalk-step-desc {
+    font-size: 0.75rem;
+    color: var(--chalk-white);
+    opacity: 0.75;
+    margin-top: 0.5rem;
+}
+
+/* Contenedores de Ecuaciones */
+.chalk-math {
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.25rem;
+    font-weight: 500;
+    gap: 0.5rem;
+    padding-left: 1rem;
+}
+
+.font-large {
+    font-size: 1.8rem;
+    text-shadow: 0 0 8px rgba(245, 245, 236, 0.4);
+}
+
+/* Fracciones Matemáticas con Bordes CSS sin LaTeX */
+.math-fraction {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    padding: 0 4px;
+}
+
+.math-num {
+    text-align: center;
+    line-height: 1;
+    padding-bottom: 2px;
+}
+
+.math-den {
+    border-top: 1.8px solid var(--chalk-white);
+    text-align: center;
+    line-height: 1;
+    padding-top: 2px;
+    width: 100%;
+}
+
+.math-sign {
+    font-size: 1.3rem;
+    padding: 0 4px;
+}
+
+.math-term {
+    color: var(--chalk-white);
+}
+
+.math-arrow {
+    color: var(--chalk-blue);
+    padding: 0 8px;
+    font-weight: bold;
+}
+
+/* Caja de Solución Enmarcada de Tiza */
+.chalk-box {
+    border: 2px solid var(--chalk-yellow);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+    margin: 0.5rem 0;
+    background-color: rgba(243, 233, 159, 0.05);
+    box-shadow: 0 0 10px rgba(243, 233, 159, 0.1);
+}
+
+.chalk-box-title {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--chalk-yellow);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   10. SOLVER INTERACTIVO (TARJETA DERECHA)
+   ========================================================================== */
+.solver-container-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--primary-navy-light);
+    margin-bottom: 0.4rem;
+}
+
+.form-control {
+    width: 100%;
+    height: 40px;
+    padding: 0.5rem 0.75rem;
+    font-family: inherit;
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: #F8FAFC;
+    color: var(--text-main);
+    outline: none;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+}
+
+.input-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    display: block;
+    margin-top: 4px;
+}
+
+/* Botón Premium */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    height: 44px;
+    width: 100%;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: #FFFFFF;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-blue-hover);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #FFFFFF;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Resultados del Solver */
+.solver-results-card {
+    margin-top: 1.5rem;
+    border-top: 2px solid var(--border-color);
+    padding-top: 1.5rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.result-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary-navy-dark);
+    margin-bottom: 0.75rem;
+}
+
+.result-highlight-box {
+    background-color: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #166534;
+    margin-bottom: 1rem;
+}
+
+.solved-year-value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #15803D;
+    line-height: 1.1;
+    margin-top: 0.25rem;
+}
+
+.result-details {
+    font-size: 0.8rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+/* Caja de Pasos */
+.math-steps-box {
+    background-color: #F8FAFC;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+}
+
+.math-steps-box h5 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.steps-list {
+    font-size: 0.72rem;
+    color: #334155;
+    padding-left: 1.25rem;
+}
+
+.steps-list li {
+    margin-bottom: 0.25rem;
+}
+
+/* ==========================================================================
+   11. PIE DE PÁGINA
+   ========================================================================== */
+.main-footer {
+    background-color: var(--primary-navy-dark);
+    color: #94A3B8;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.75rem;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.footer-meta {
+    color: #64748B;
+    margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   12. RESPONSIVIDAD (MEDIA QUERIES)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .header-container {
+        grid-template-columns: 1fr 1.5fr;
+    }
+    .data-source {
+        grid-column: span 2;
+        justify-content: center;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding-top: 0.5rem;
+    }
+    .dashboard-body, .map-layout, .model-layout {
+        grid-template-columns: 1fr;
+    }
+    .svg-map-wrapper {
+        max-width: 320px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .data-source {
+        grid-column: span 1;
+    }
+    .nav-container {
+        padding: 0 0.5rem;
+        overflow-x: auto;
+    }
+    .nav-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+    .content-wrapper {
+        padding: 1rem;
+    }
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
