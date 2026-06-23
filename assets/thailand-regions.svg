@@ -1,0 +1,46 @@
+<svg id="thailand-map" viewBox="0 0 500 800" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- Definición de gradientes y sombras para aspecto premium -->
+    <defs>
+        <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+            <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.35"/>
+        </filter>
+    </defs>
+
+    <!-- Capa de Océano decorativa -->
+    <rect width="100%" height="100%" fill="none"/>
+    
+    <!-- Grupo del Mapa Completo -->
+    <g filter="url(#shadow)">
+        <!-- 1. Northern Region (Norte) -->
+        <path id="map-region-Northern" class="map-region-path" data-region="Northern"
+              d="M 170 80 L 250 50 L 300 80 L 310 140 L 330 180 L 270 230 L 210 230 L 170 170 Z" />
+
+        <!-- 2. Northeastern Region (Isan) -->
+        <path id="map-region-Northeastern" class="map-region-path" data-region="Northeastern"
+              d="M 300 80 L 370 100 L 440 120 L 460 200 L 440 280 L 370 320 L 310 290 L 270 230 L 330 180 L 310 140 Z" />
+
+        <!-- 3. Western Region (Oeste) -->
+        <path id="map-region-Western" class="map-region-path" data-region="Western"
+              d="M 170 170 L 210 230 L 190 320 L 200 420 L 170 470 L 160 470 L 150 320 L 170 170 Z" />
+
+        <!-- 4. Central Region (Centro) -->
+        <path id="map-region-Central" class="map-region-path" data-region="Central"
+              d="M 210 230 L 270 230 L 310 290 L 330 360 L 240 360 L 200 420 L 190 320 Z" />
+
+        <!-- 5. Eastern Region (Este) -->
+        <path id="map-region-Eastern" class="map-region-path" data-region="Eastern"
+              d="M 310 290 L 330 360 L 330 390 L 400 320 L 370 320 Z" />
+
+        <!-- 6. Southern Region (Sur) -->
+        <path id="map-region-Southern" class="map-region-path" data-region="Southern"
+              d="M 170 470 L 200 420 L 240 360 L 330 390 L 230 460 L 220 540 L 230 630 L 260 720 L 240 760 L 200 760 L 180 660 L 180 540 Z" />
+    </g>
+
+    <!-- Etiquetas de Texto Incrustadas Legibles (<text> SVG) -->
+    <text x="235" y="145" class="svg-region-label" pointer-events="none">Northern</text>
+    <text x="365" y="200" class="svg-region-label" pointer-events="none">Northeastern</text>
+    <text x="245" y="295" class="svg-region-label" pointer-events="none">Central</text>
+    <text x="175" y="325" class="svg-region-label" pointer-events="none">Western</text>
+    <text x="360" y="355" class="svg-region-label" pointer-events="none">Eastern</text>
+    <text x="210" y="600" class="svg-region-label" pointer-events="none">Southern</text>
+</svg>
