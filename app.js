@@ -102,20 +102,10 @@ async function initApp() {
 // ==========================================================================
 // 3. COMUNICACIÓN CON EL BACKEND (API FETCH)
 // ==========================================================================
-async function fetchProjectionData() {
-    try {
-        const response = await fetch('/api/projection');
-        if (!response.ok) {
-            throw new Error('Error al descargar datos demográficos desde el servidor');
-        }
-        appState.projectionData = await response.json();
-    } catch (error) {
-        console.error('Error fetching projection data from Flask:', error);
-        alert('No se pudo conectar con el servidor backend de Python (app.py). La aplicación funcionará en modo local con datos de respaldo.');
-        loadMockData(); // Carga de respaldo si falla la API
-    }
+function fetchProjectionData() {
+    console.log("Cargando datos locales en GitHub Pages...");
+    loadMockData();
 }
-
 // Respaldo local de datos simulados en caso de que no haya conexión con el backend
 function loadMockData() {
     const years = Array.from({length: 23}, (_, i) => 2018 + i);
